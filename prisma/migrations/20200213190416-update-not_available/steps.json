@@ -1,0 +1,185 @@
+{
+  "version": "0.3.14-fixed",
+  "steps": [
+    {
+      "tag": "UpdateEnum",
+      "enum": "Position",
+      "createdValues": [
+        "NOT_AVAILABLE"
+      ]
+    },
+    {
+      "tag": "UpdateEnum",
+      "enum": "CompanyIndustry",
+      "createdValues": [
+        "NOT_AVAILABLE"
+      ]
+    },
+    {
+      "tag": "UpdateEnum",
+      "enum": "Gender",
+      "createdValues": [
+        "FEMALE"
+      ],
+      "deletedValues": [
+        "FEmALE"
+      ]
+    },
+    {
+      "tag": "UpdateEnum",
+      "enum": "Industry",
+      "createdValues": [
+        "NOT_AVAILABLE"
+      ]
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "gender"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "gender"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "MALE"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "industry",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "industry"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "industry"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "NOT_AVAILABLE"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "education",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "education"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "education"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "S1"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "role",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "role"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "MEMBER"
+    },
+    {
+      "tag": "UpdateField",
+      "model": "User",
+      "field": "position",
+      "arity": "Required"
+    },
+    {
+      "tag": "CreateDirective",
+      "location": {
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "position"
+        },
+        "directive": "default"
+      }
+    },
+    {
+      "tag": "CreateArgument",
+      "location": {
+        "tag": "Directive",
+        "path": {
+          "tag": "Field",
+          "model": "User",
+          "field": "position"
+        },
+        "directive": "default"
+      },
+      "argument": "",
+      "value": "NOT_AVAILABLE"
+    }
+  ]
+}

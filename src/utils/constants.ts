@@ -6,7 +6,7 @@ import { handleError } from './helpers'
 export const tokens = {
   access: {
     name: 'ACCESS_TOKEN',
-    expiry: '15m',
+    expiry: '30m',
   },
   refresh: {
     name: 'REFRESH_TOKEN',

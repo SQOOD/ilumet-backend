@@ -3,13 +3,13 @@ import { rules } from './rules'
 
 export const permissions = shield({
   Query: {
-    '*': rules.isAuthenticatedUser,
+    '*': allow // rules.isAuthenticatedUser,
   },
   Mutation: {
-    '*': rules.isAuthenticatedUser,
+    '*': allow, //rules.isAuthenticatedUser,
     signup: rules.isAdmin,
     login: allow,
-    forgotpassword: allow,
+    // forgotpassword: allow,
     // resetpassword: rules.isForgotPassword,
   },
 })

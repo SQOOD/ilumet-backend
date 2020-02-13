@@ -1,7 +1,7 @@
 import {
   mutationField,
   stringArg,
-  arg,
+  intArg,
   queryField
 } from 'nexus'
 import { getUserId } from '../utils/constants'
@@ -30,68 +30,45 @@ export const me = queryField('me', {
 export const signup = mutationField('signup', {
   type: 'AuthPayload',
   args: {
-    username: stringArg({ required: true }),
+    email: stringArg({ required: true }),
     password: stringArg({ required: true }),
-    company_permission: arg({ type: "CompanyPermission" }),
-    picture: stringArg({ nullable : true }),
-    role: stringArg({ required: true }),
-    commodity: arg({ type: "Commodity" }),
-    wiup: stringArg({ nullable: true }),
-    npwp: stringArg({ nullable: true }),
-    email: stringArg({ nullable: true }),
-    phone: stringArg({ nullable: true }),
-    company_type: arg({ type: "CompanyType" }),
-    company_name: stringArg({ nullable: true }),
-    address: stringArg({ nullable: true }),
-    recaptchaToken: stringArg({ required: true }),
+    name: stringArg({ required: true }),
+    class_year: intArg({ required: true }),
+    phone: stringArg({ required: true }),
+    // recaptchaToken: stringArg({ required: true }),
   },
   resolve: async (_parent, { 
-    username,
-    password,
-    company_permission,
-    picture,
-    role,
-    commodity,
-    wiup,
-    npwp,
     email,
+    password,
+    name,
+    class_year,
     phone,
-    company_name,
-    company_type,
-    address,
-    recaptchaToken,
+    // recaptchaToken
   }, ctx) => {
     const hashedPassword = await hash(password, 10)
     const user = await ctx.prisma.user.create({
       data: {
-        username,
-        password: hashedPassword,
-        company_permission,
-        picture,
-        role,
-        commodity,
-        company_type,
-        company_name,
-        wiup,
-        npwp,
         email,
+        password: hashedPassword,
+        name,
+        class_year,
         phone,
-        address,
+        // recaptchaToken
       },
     })
-    const recaptchaData = {
-      secret: '6LdQJdUUAAAAAInT8D7Zdq5mBuEisK0-vXHfNEA2',
-      response: recaptchaToken
-    }
+    // const recaptchaData = {
+    //   secret: '6LeVg9gUAAAAAAGT2-JiqaNWmlpfVw4S7X4TOqiG',
+    //   response: recaptchaToken
+    // }
 
-    const resultCaptcha = await axios({
-      method: 'post',
-      url: 'https://www.google.com/recaptcha/api/siteverify',
-      data: recaptchaData,
-      params: recaptchaData
-    })
+    // const resultCaptcha = await axios({
+    //   method: 'post',
+    //   url: 'https://www.google.com/recaptcha/api/siteverify',
+    //   data: recaptchaData,
+    //   params: recaptchaData
+    // })
 
-    if (resultCaptcha.data.success === true) {
+    // if (resultCaptcha.data.success === true) {
       const [accessToken, refreshToken] = [
         generateAccessToken(user.id),
         generateRefreshToken(user.id)
@@ -100,31 +77,31 @@ export const signup = mutationField('signup', {
         httpOnly: true,
       })
 
-      const result = resultCaptcha.statusText
+      // const result = resultCaptcha.statusText
       return {
         accessToken,
         user,
-        result
+        // result
       }
-    } else {
-      handleError(errors.invalidCaptcha)
-    }
+    // } else {
+    //   handleError(errors.invalidCaptcha)
+    // }
   },
 })
 
 export const login = mutationField('login', {
   type: 'AuthPayload',
   args: {
-    username: stringArg({ required: true }),
+    email: stringArg({ required: true }),
     password: stringArg({ required: true }),
-    recaptchaToken: stringArg({ required: true }),
+    // recaptchaToken: stringArg({ required: true }),
   },
-  resolve: async (_parent, { username, password, recaptchaToken }, ctx) => {
+  resolve: async (_parent, { email, password, /*recaptchaToken*/ }, ctx) => {
     let user = null
     try {
       user = await ctx.prisma.user.findOne({
         where: {
-          username,
+          email,
         },
       })
     } catch (e) {
@@ -136,19 +113,19 @@ export const login = mutationField('login', {
     const passwordValid = await compare(password, user.password)
     if (!passwordValid) handleError(errors.invalidUser)
     
-    const recaptchaData = {
-      secret: '6LdQJdUUAAAAAInT8D7Zdq5mBuEisK0-vXHfNEA2',
-      response: recaptchaToken
-    }
+    // const recaptchaData = {
+    //   secret: '6LeVg9gUAAAAAAGT2-JiqaNWmlpfVw4S7X4TOqiG',
+    //   response: recaptchaToken
+    // }
 
-    const resultCaptcha = await axios({
-      method: 'post',
-      url: 'https://www.google.com/recaptcha/api/siteverify',
-      data: recaptchaData,
-      params: recaptchaData
-    })
+    // const resultCaptcha = await axios({
+    //   method: 'post',
+    //   url: 'https://www.google.com/recaptcha/api/siteverify',
+    //   data: recaptchaData,
+    //   params: recaptchaData
+    // })
 
-    if (resultCaptcha.data.success === true) {
+    // if (resultCaptcha.data.success === true) {
       const [accessToken, refreshToken] = [
         generateAccessToken(user.id),
         generateRefreshToken(user.id)
@@ -157,31 +134,30 @@ export const login = mutationField('login', {
         httpOnly: true,
       })
 
-      const result = resultCaptcha.statusText
+      // const result = resultCaptcha.statusText
       return {
         accessToken,
         user,
-        result
+        // result
       }
-    } else {
-      handleError(errors.invalidCaptcha)
-    }
+  //   } else {
+  //     handleError(errors.invalidCaptcha)
+  //   }
   },
 })
 
 export const forgotpassword = mutationField('forgotpassword', {
   type: 'AuthPayload',
   args: {
-    username: stringArg({ required: true }),
     email: stringArg({ required: true }),
     recaptchaToken: stringArg({ required: true }),
   },
-  resolve: async (_parent, { username, email, recaptchaToken }, ctx) => {
+  resolve: async (_parent, { email, recaptchaToken }, ctx) => {
     let user = null
     try {
       user = await ctx.prisma.user.findOne({
         where: {
-          username,
+          email,
         },
       })
     } catch (e) {
@@ -194,7 +170,7 @@ export const forgotpassword = mutationField('forgotpassword', {
     if (!emailValid) handleError(errors.invalidMail)
 
     const recaptchaData = {
-      secret: '6LdQJdUUAAAAAInT8D7Zdq5mBuEisK0-vXHfNEA2',
+      secret: '6LeVg9gUAAAAAAGT2-JiqaNWmlpfVw4S7X4TOqiG',
       response: recaptchaToken
     }
 
@@ -207,7 +183,7 @@ export const forgotpassword = mutationField('forgotpassword', {
 
     if (resultCaptcha.data.success === true) {
       const [accessToken, refreshToken] = [
-        generateAccessToken(user.id),
+        generateForgotToken(user.id),
         generateRefreshToken(user.id)
       ]
       ctx.response.cookie('refreshToken', refreshToken, {
