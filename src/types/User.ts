@@ -5,6 +5,7 @@ export const User = objectType({
   definition(t) {
     t.model.id()
     t.model.email()
+    t.model.name()
     t.model.password()
     t.model.class_year()
     t.model.phone()
